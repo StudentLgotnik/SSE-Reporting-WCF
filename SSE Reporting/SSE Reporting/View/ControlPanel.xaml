@@ -1,0 +1,93 @@
+﻿<Window x:Class="SSE_Reporting.View.ControlPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SSE_Reporting.View"
+        mc:Ignorable="d"
+        Title="Admin" Height="450" Width="720">
+    <Window.Resources>
+        <Style x:Key="BtnStyle" TargetType="Button">
+            <Setter Property="Control.Background" Value="#0b77e3" />
+            <Setter Property="Control.BorderBrush" Value="#005dba" />
+            <Setter Property="Control.Foreground" Value="White" />
+        </Style>
+        <Style x:Key="TextBoxStyle">
+            <Setter Property="Control.BorderBrush" Value="#005dba" />
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid DataContext="{Binding SelectedProject}">
+            <TextBox x:Name="companyName"  HorizontalAlignment="Left" Margin="140,20,0,0" VerticalAlignment="Top" Text="{Binding Company, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Width="180" Height="30" FontSize="20" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+        </Grid>
+        <TabControl Margin="0,70,0,0">
+            <TabItem Header="Add project" Margin="0" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Height" Width="175">
+                <Grid Margin="0,0,-5,0">
+                    <Label HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Content="Projects" Width="170" FontSize="20" Padding="0"/>
+                    <Button Command="{Binding AddProject}" Margin="550,40,20,0" VerticalAlignment="Top" Content="Add" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Button Command="{Binding DeleteProject}" Margin="550,80,20,0" VerticalAlignment="Top" Content="Delete" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <ListBox  SelectedIndex="{Binding ProjectSelectedIndex,Mode=TwoWay}" HorizontalAlignment="Left" Margin="20,40,0,10" Width="170" ItemsSource="{Binding Projects, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedProject}"/>
+                    <StackPanel>
+                        <TextBox Margin="200,40,173,0" VerticalAlignment="Top" Text="{Binding Path=SelectedProject.Name, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" FontSize="20" Style="{StaticResource TextBoxStyle}"/>
+                    </StackPanel>
+                    <Button Command="{Binding EditProject}" Margin="550,120,20,0" VerticalAlignment="Top" Content="Edit" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add task" Height="30" Width="175" Margin="0" VerticalAlignment="Bottom" d:LayoutOverrides="Height">
+                <Grid Margin="0,0,-5,0">
+                    <Label HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Content="Projects" Width="170" FontSize="20" Padding="0"/>
+                    <ListBox  SelectedIndex="{Binding ProjectSelectedIndex,Mode=TwoWay}" HorizontalAlignment="Left" Margin="20,40,0,10" Width="170" ItemsSource="{Binding Projects, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedProject}"/>
+                    <Button Command="{Binding AddTask}" Margin="566,40,20,0" VerticalAlignment="Top" Content="Add" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Grid DataContext="{Binding SelectedTask}">
+                        <TextBox Margin="200,40,0,0" VerticalAlignment="Top" Width="210" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" FontSize="20" HorizontalAlignment="Left" Style="{StaticResource TextBoxStyle}"/>
+                    </Grid>
+                    <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding Path=SelectedTask.Activity}" Text="{Binding Path=SelectedTask.Activity, UpdateSourceTrigger=PropertyChanged}" Margin="420,40,155,0" VerticalAlignment="Top" FontSize="20" Height="29"/>
+
+                    <Label HorizontalAlignment="Left" Margin="200,80,0,0" VerticalAlignment="Top" Content="Tasks" Width="209" FontSize="20" Padding="0" Height="36"/>
+                    <ListBox  SelectedIndex="{Binding TaskSelectedIndex,Mode=TwoWay}" Margin="200,115,20,10" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}"  SelectedItem="{Binding SelectedTask}"/>
+                    <Label HorizontalAlignment="Left" Margin="200,10,0,0" VerticalAlignment="Top" Content="Task name" Width="209" FontSize="20" Padding="0"/>
+                    <Label HorizontalAlignment="Left" Margin="420,10,0,0" VerticalAlignment="Top" Content="Activity" Width="136" FontSize="20" Padding="0"/>
+                    <Button Command="{Binding TaskToProject}" Margin="420,80,155,0" VerticalAlignment="Top" Content="Add to project" RenderTransformOrigin="0.48,0.545" FontSize="18" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Button Command="{Binding DeleteTask}" Margin="566,80,20,0" VerticalAlignment="Top" Content="Delete" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add user" Height="30" Width="175" Margin="0">
+                <Grid Margin="0,0,-5,0">
+                    <Label HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Content="Projects" Width="170" FontSize="20" Padding="0"/>
+                    <ListBox  SelectedIndex="{Binding ProjectSelectedIndex,Mode=TwoWay}" HorizontalAlignment="Left" Margin="20,40,0,10" Width="170" ItemsSource="{Binding Projects, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedProject}"/>
+                    <Label HorizontalAlignment="Left" Margin="200,80,0,0" VerticalAlignment="Top" Content="Users" Width="63" FontSize="20" Padding="0" Height="36"/>
+                    <Button Command="{Binding AddEmployee}" Margin="566,40,20,0" VerticalAlignment="Top" Content="Add" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <ListBox  SelectedIndex="{Binding EmployeeSelectedIndex,Mode=TwoWay}" HorizontalAlignment="Left" Margin="200,115,0,10" Width="491" ItemsSource="{Binding Employees , UpdateSourceTrigger=PropertyChanged}"
+                 SelectedItem="{Binding SelectedEmployee}"/>
+                    <Label HorizontalAlignment="Left" Margin="200,10,0,0" VerticalAlignment="Top" Content="Login" Width="209" FontSize="20" Padding="0"/>
+                    <Label HorizontalAlignment="Left" Margin="420,10,0,0" VerticalAlignment="Top" Content="Password" Width="135" FontSize="20" Padding="0"/>
+                    <TextBox Margin="420,40,155,0" VerticalAlignment="Top" Text="{Binding Path=SelectedEmployee.Password, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" FontSize="20" Height="29" Style="{StaticResource TextBoxStyle}"/>
+                    <TextBox Margin="200,40,0,0" VerticalAlignment="Top" Width="210" Text="{Binding Path=SelectedEmployee.Login, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" FontSize="20" HorizontalAlignment="Left" Style="{StaticResource TextBoxStyle}"/>
+                    <Button Command="{Binding EmployeeToProject}" Margin="420,78,155,0" VerticalAlignment="Top" Content="Add to project" RenderTransformOrigin="0.48,0.545" FontSize="18" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Button Command="{Binding MakeAdmin}" Margin="275,78,301,0" VerticalAlignment="Top" Content="Make admin" RenderTransformOrigin="0.48,0.545" FontSize="18" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Button Command="{Binding DeleteEmployee}" Margin="566,78,20,0" VerticalAlignment="Top" Content="Delete" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add admin" Height="30" Width="175" Margin="0">
+                <Grid Margin="0,0,-5,0">
+                    <Label HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Content="Projects" Width="170" FontSize="20" Padding="0"/>
+                    <Button Command="{Binding AddAdmin}" Margin="566,40,20,0" VerticalAlignment="Top" Content="Add" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <ListBox  SelectedIndex="{Binding ProjectSelectedIndex,Mode=TwoWay}" HorizontalAlignment="Left" Margin="20,40,0,10" Width="170" ItemsSource="{Binding Projects, UpdateSourceTrigger=PropertyChanged}"
+                 SelectedItem="{Binding SelectedProject}"/>
+                    <Label HorizontalAlignment="Left" Margin="200,80,0,0" VerticalAlignment="Top" Content="Admins" Width="70" FontSize="20" Padding="0" Height="36"/>
+                    <ListBox  SelectedIndex="{Binding AdminSelectedIndex,Mode=TwoWay}" HorizontalAlignment="Left" Margin="200,115,0,10" Width="491" ItemsSource="{Binding Admins , UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedAdmin}"/>
+                    <Label HorizontalAlignment="Left" Margin="200,10,0,0" VerticalAlignment="Top" Content="Login" Width="209" FontSize="20" Padding="0"/>
+                    <Label HorizontalAlignment="Left" Margin="420,10,0,0" VerticalAlignment="Top" Content="Password" Width="135" FontSize="20" Padding="0"/>
+                    <Grid DataContext="{Binding SelectedAdmin}">
+                        <TextBox Margin="420,40,155,0" VerticalAlignment="Top" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" FontSize="20" Height="29" Style="{StaticResource TextBoxStyle}"/>
+                        <TextBox Margin="200,40,0,0" VerticalAlignment="Top" Width="210" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" FontSize="20" HorizontalAlignment="Left" Style="{StaticResource TextBoxStyle}"/>
+                    </Grid>
+                    <Button Command="{Binding AdminToProject}" Margin="420,78,155,0" VerticalAlignment="Top" Content="Add to project" RenderTransformOrigin="0.48,0.545" FontSize="18" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Button Command="{Binding PickUpAdmin}" Margin="275,78,301,0" VerticalAlignment="Top" Content="Pick up admin" RenderTransformOrigin="0.48,0.545" FontSize="18" Height="29" Style="{StaticResource BtnStyle}"/>
+                    <Button Command="{Binding DeleteAdmin}" Margin="566,78,20,0" VerticalAlignment="Top" Content="Delete" RenderTransformOrigin="0.48,0.545" FontSize="20" Height="29" Style="{StaticResource BtnStyle}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="100" Height="30" FontSize="20" Text="Company:" TextWrapping="Wrap"/>
+    </Grid>
+</Window>

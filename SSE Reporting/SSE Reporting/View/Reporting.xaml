@@ -1,0 +1,205 @@
+﻿<Window x:Class="SSE_Reporting.View.Reporting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SSE_Reporting.View"
+        xmlns:local1="clr-namespace:SSE_Reporting"
+        mc:Ignorable="d"
+        Title="Reporting" Height="500" Width="725">
+    <Window.Resources>
+        <Style x:Key="BtnStyle" TargetType="Button">
+            <Setter Property="Control.Background" Value="#0b77e3" />
+            <Setter Property="Control.BorderBrush" Value="#005dba" />
+            <Setter Property="Control.Foreground" Value="White" />
+        </Style>
+        <Style x:Key="TextBoxStyle">
+            <Setter Property="Control.BorderBrush" Value="#005dba" />
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="LayoutRoot" Background="White" Margin="2,8,2,0" Width="704">
+
+        <Button Command="{Binding PreviousWeek}" HorizontalAlignment="Left" Margin="16,20,0,0" VerticalAlignment="Top" Width="30" Height="30" Content="&lt;" FontSize="20" Padding="0,-5,0,0" Style="{StaticResource BtnStyle}">
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="ControlsGrid" 
+                                        Storyboard.TargetProperty="(Canvas.Left)"
+                                        From="0" To="+704" Duration="0:0:0.4" />
+                            <DoubleAnimation Storyboard.TargetName="ControlsGrid" 
+                                        Storyboard.TargetProperty="(Canvas.Left)"
+                                        From="-704"  To="0" Duration="0:0:0.4" 
+                                             BeginTime="0:0:0.4"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+        <Button Command="{Binding NextWeek}" HorizontalAlignment="Left" Margin="60,20,0,0" VerticalAlignment="Top" Width="30" Height="30" Content="&gt;" FontSize="20" Padding="0,-5,0,0" Style="{StaticResource BtnStyle}">
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="ControlsGrid" 
+                                        Storyboard.TargetProperty="(Canvas.Left)"
+                                        From="0" To="-704" Duration="0:0:0.4" />
+                            <DoubleAnimation Storyboard.TargetName="ControlsGrid" 
+                                        Storyboard.TargetProperty="(Canvas.Left)"
+                                        From="+704"  To="0" Duration="0:0:0.4" 
+                                             BeginTime="0:0:0.4"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+        <TextBlock Text="{Binding SelectedMonth}" TextAlignment="Left" HorizontalAlignment="Left" Margin="120,20,0,0" VerticalAlignment="Top" Width="289" Height="30" FontSize="20" TextWrapping="Wrap"/>
+        <Button  Command="{Binding Info}"  HorizontalAlignment="Right" Margin="0,20,20,0" VerticalAlignment="Top" Width="70" Height="30" Content="Info" Style="{StaticResource BtnStyle}"/>
+        <Button Command="{Binding AdminPanel}" Name="AdminBtn" HorizontalAlignment="Right" Margin="0,20,110,0" VerticalAlignment="Top" Width="90" Height="30" Content="Control Panel" Style="{StaticResource BtnStyle}"/>
+
+        <!-- -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!--<TextBlock Grid.Row="0" Text="Grid Silding Test" FontSize="20" />-->
+
+            <Canvas Grid.Row="1" Background="Transparent" x:Name="canvas" Margin="0,0,0,0">
+                <Grid Name="ControlsGrid" Canvas.Left="0" Height="{Binding ElementName=canvas, Path=ActualHeight}" Width="{Binding ElementName=canvas, Path=ActualWidth}" Background="White">
+                    <TabControl  SelectedIndex="{Binding SelectedTabIndex}" Name="MyTabControl" Margin="0,0,0,0" Width="704">
+                        <TabItem Header="{Binding MondayHeader}" Margin="0" Width="100" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Height">
+                            <Grid Margin="0,0,-5,0" Height="357" VerticalAlignment="Top">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16" />
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}" />
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27"  Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox  ItemsSource="{Binding MondayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="mondaylistBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+
+                                <local1:Slider Background="DarkGray" Value="{Binding MondayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{Binding TuesdayHeader}" Height="30" Margin="0" Width="100">
+                            <Grid Margin="0,0,-5,0">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox ItemsSource="{Binding TuesdayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="tuesdaylistBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+                                <local1:Slider Background="DarkGray" Value="{Binding TuesdayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{Binding WednesdayHeader}" Height="30" Margin="0" Width="100">
+                            <Grid Margin="0,0,-5,0">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox ItemsSource="{Binding WednesdayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="wednesdaylistBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+                                <local1:Slider Background="DarkGray" Value="{Binding WednesdayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{Binding ThursdayHeader}" Height="30"  Margin="0" Width="100">
+                            <Grid Margin="0,0,-5,0">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox ItemsSource="{Binding ThursdayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="thursdayListBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+                                <local1:Slider Background="DarkGray" Value="{Binding ThursdayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{Binding FridayHeader}" Height="30" Margin="0" Width="100">
+                            <Grid Margin="0,0,-5,0">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox ItemsSource="{Binding FridayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="fridayListBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+                                <local1:Slider Background="DarkGray" Value="{Binding FridayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{Binding SaturdayHeader}" Height="30" Margin="0" Width="100">
+                            <Grid Margin="0,0,-5,0">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox ItemsSource="{Binding SaturdayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="saturdayListBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+                                <local1:Slider Background="DarkGray" Value="{Binding SaturdayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{Binding SundayHeader}" Height="30" Margin="0" Width="100">
+                            <Grid Margin="0,0,-5,0">
+                                <ComboBox ItemsSource="{Binding Path=Projects}" SelectedItem="{Binding SelectedReport.Project}" HorizontalAlignment="Left" Margin="10, 35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding ActivityEnum}" SelectedItem="{Binding SelectedReport.Activity}" Margin="260,35,322,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <ComboBox ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding SelectedReport.Task}" HorizontalAlignment="Left" Margin="135,35,0,0" VerticalAlignment="Top" Width="120" FontSize="16"/>
+                                <TextBox Text="{Binding SelectedReport.StartHours}" HorizontalAlignment="Left" Margin="390,35,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="70" FontSize="16" Height="27" TextAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
+                                <TextBox Text="{Binding SelectedReport.EndHours}" HorizontalAlignment="Left" Margin="470,35,0,0" VerticalAlignment="Top" Width="70" Height="27" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Style="{StaticResource TextBoxStyle}"/>
+                                <Label HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Content="Project" Width="120" FontSize="16" Padding="0" Grid.ColumnSpan="2"/>
+                                <Label HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="120" Content="Task" FontSize="16" Padding="0"/>
+                                <Label Margin="245,10,306,0" VerticalAlignment="Top" Content="Activity" Width="120" FontSize="16" Padding="0"/>
+                                <Label Margin="390,10,0,0" VerticalAlignment="Top" Content="Start" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <Button Command="{Binding AddReport}" HorizontalAlignment="Left" Margin="550,35,0,0" VerticalAlignment="Top" Width="65" Content="Add" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Button Command="{Binding DeleteReport}" HorizontalAlignment="Left" Margin="625,35,0,0" VerticalAlignment="Top" Width="65" Content="Delete" FontSize="16" Height="27" Style="{StaticResource BtnStyle}"/>
+                                <Label Margin="470,10,0,0" VerticalAlignment="Top" Content="End" HorizontalAlignment="Left" Width="70" FontSize="16" Padding="0"/>
+                                <ListBox ItemsSource="{Binding SundayReports, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedReport}" x:Name="sundayListBox" HorizontalAlignment="Left" Height="252" Margin="-2,70,0,0" VerticalAlignment="Top" Width="702"/>
+                                <local1:Slider Background="DarkGray" Value="{Binding SundayProgress}" Margin="-2,322,0,-2"/>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Canvas>
+        </Grid>
+        <Button Command="{Binding Chat}"  HorizontalAlignment="Right" Margin="0,20,220,0" VerticalAlignment="Top" Width="70" Height="30" Content="Chat" Style="{StaticResource BtnStyle}" />
+        <!-- -->
+    </Grid>
+</Window>
